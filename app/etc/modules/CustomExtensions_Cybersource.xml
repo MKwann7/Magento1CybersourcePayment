@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <CustomExtensions_Dybersource>
+            <active>true</active>
+            <codePool>local</codePool>
+        </CustomExtensions_Dybersource>
+    </modules>
+</config>

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <CustomExtensions_Cybersource>
+            <version>1.0.0.1</version>
+        </CustomExtensions_Cybersource>
+    </modules>
+    <global>
+        <models>
+            <cybersource>
+                <class>CustomExtensions_Cybersource_Model</class>
+            </cybersource>
+        </models>
+        <resources>
+            <cybersource_setup>
+                <setup>
+                    <module>CustomExtensions_Cybersource</module>
+                </setup>
+            </cybersource_setup>
+        </resources>
+        <blocks>
+            <cybersource>
+                <class>CustomExtensions_Cybersource_Block</class>
+            </cybersource>
+        </blocks>
+        <helpers>
+            <cybersource>
+                <class>CustomExtensions_Cybersource_Helper</class>
+            </cybersource>
+        </helpers>
+        <payment>
+            <cc>
+                <types>
+                    <AE>
+                        <code>AE</code>
+                        <name>American Express</name>
+                        <order>0</order>
+                    </AE>
+                    <VI>
+                        <code>VI</code>
+                        <name>Visa</name>
+                        <order>10</order>
+                    </VI>
+                    <MC>
+                        <code>MC</code>
+                        <name>MasterCard</name>
+                        <order>20</order>
+                    </MC>
+                    <DI>
+                        <code>DI</code>
+                        <name>Discover</name>
+                        <order>30</order>
+                    </DI>
+                    <SM>
+                        <code>SM</code>
+                        <name>Maestro/Switch</name>
+                        <order>40</order>
+                    </SM>
+                    <SO>
+                        <code>SO</code>
+                        <name>Solo</name>
+                        <order>45</order>
+                    </SO>
+                    <JCB>
+                        <code>JCB</code>
+                        <name>JCB</name>
+                        <order>50</order>
+                    </JCB>
+                    <OT>
+                        <code>OT</code>
+                        <name>Other</name>
+                        <order>1000</order>
+                    </OT>
+                </types>
+            </cc>
+            <groups>
+                <offline>Offline Payment Methods</offline>
+            </groups>
+        </payment>
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <!-- defines what the form we create will pass.
+                    used in /app/code/local/CustomExtensions/Cybersource/Model/Method/Creditcart.php
+                    DEV: 26730683-5a07-4dd0-98eb-97184ca424da -->
+                <datix_cybersource_credit_card_type>
+                    <to_order_payment>*</to_order_payment>
+                </datix_cybersource_credit_card_type>
+                <datix_cybersource_credit_card_number>
+                    <to_order_payment>*</to_order_payment>
+                </datix_cybersource_credit_card_number>
+                <datix_cybersource_expiration_date_month>
+                    <to_order_payment>*</to_order_payment>
+                </datix_cybersource_expiration_date_month>
+                <datix_cybersource_expiration_date_year>
+                    <to_order_payment>*</to_order_payment>
+                </datix_cybersource_expiration_date_year>
+                <datix_cybersource_card_verification_number>
+                    <to_order_payment>*</to_order_payment>
+                </datix_cybersource_card_verification_number>
+            </sales_convert_quote_payment>
+        </fieldsets>
+    </global>
+    <default>
+        <payment>
+            <datixcybersource> <!--- links to /app/code/local/CustomDatixExtentions/Cybersource/Block/Form/Creditcard.php -->
+                <active>1</active>
+                <credit_card_types>AE,VI,MC,DI</credit_card_types>
+                <model>cybersource/method_creditcard</model>
+                <title>Credit Card</title> <!-- TODO: Change this when complete -->
+                <test>1</test>
+                <order_status>processing</order_status>
+                <!--
+                    payment_action is linked to /app/code/code/Mage/Sales/Model/Order/Payment.php, Line 329.
+                    Line 331 checks to see if it has a value, and if so, allows payment processing.
+                    If payment_action is excluded, then the authorize() and capture() methods cannot be reached.
+                    There is no default payment action. Without this entry, this payment method will not fire.
+                -->
+                <payment_action>authorize</payment_action>
+                <enable_tokenisation>0</enable_tokenisation>
+                <allowspecific>0</allowspecific>
+                <sort_order>1</sort_order>
+                <login backend_model="adminhtml/system_config_backend_encrypted"/>
+                <trans_key backend_model="adminhtml/system_config_backend_encrypted"/>
+                <live_url>https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.130.wsdl</live_url>
+                <test_url>https://ics2wstesta.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.130.wsdl</test_url>
+            </datixcybersource>
+        </payment>
+    </default>
+    <frontend>
+        <routers>
+            <cybersource>
+                <use>standard</use>
+                <args>
+                    <module>CustomExtensions_Cybersource</module>
+                    <frontName>cybersource</frontName>
+                </args>
+            </cybersource>
+        </routers>
+    </frontend>
+    <admin>
+        <routers>
+            <cybersource>
+                <use>admin</use>
+                <args>
+                    <module>CustomExtensions_Cybersource</module>
+                </args>
+            </cybersource>
+        </routers>
+    </admin>
+</config>
